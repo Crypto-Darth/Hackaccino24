@@ -1,113 +1,93 @@
+"use client"
 import Image from "next/image";
+import logo from './ai.png'
+import logo2 from './Logo.png'
+import pfp from './pfp.png'
+import { useState,useEffect } from "react";
+// import getdata from "./back";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set, get, child } from "firebase/database";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyB_0KMxFTCsqY05NaQGqvPfB460tIAIsiE",
+    authDomain: "hackaccino24.firebaseapp.com",
+    databaseURL: "https://hackaccino24-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hackaccino24",
+    storageBucket: "hackaccino24.appspot.com",
+    messagingSenderId: "708074645866",
+    appId: "1:708074645866:web:ddbafe33a21f9f45445d13"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+const dbRef = ref(getDatabase());
+
+
+
 
 export default function Home() {
+ 
+  const [level,setLevel] = useState(101)
+  const [value,setValue] = useState("[['Name',30,'M','Dabra'],[40,101,30],[[''1-2-24 Visit 1','https://firebasestorage.googleapis.com/v0/b/hackaccino24.appspot.com/o/p1%2Fv11.pdf?alt=media&token=e2e411d6-3209-4470-8d2c-76a40caa49d3'],[''1-2-24 Visit 1','https://firebasestorage.googleapis.com/v0/b/hackaccino24.appspot.com/o/p1%2Fv12.pdf?alt=media&token=548cc23a-f23a-4f41-8021-7783fb8831b7'],[''3-2-24 Visit 1','https://firebasestorage.googleapis.com/v0/b/hackaccino24.appspot.com/o/p1%2Fv12.pdf?alt=media&token=548cc23a-f23a-4f41-8021-7783fb8831b7'],[''5-2-24 Visit 1','https://firebasestorage.googleapis.com/v0/b/hackaccino24.appspot.com/o/p1%2Fv13.pdf?alt=media&token=4fbd5154-6f12-46ea-a5a3-2c3e20dc3e38'],[''7-2-24 Visit 1','https://firebasestorage.googleapis.com/v0/b/hackaccino24.appspot.com/o/p1%2Fv14.pdf?alt=media&token=ef82bc52-a529-480b-9342-dcf080166ce9'],[''9-2-24 Visit 1','https://firebasestorage.googleapis.com/v0/b/hackaccino24.appspot.com/o/p1%2Fv1b1.pdf?alt=media&token=974cca9b-7bf6-4187-ae06-9acc72db6290'],[''9-2-24 Visit 1','https://firebasestorage.googleapis.com/v0/b/hackaccino24.appspot.com/o/p1%2Fv5.pdf?alt=media&token=0f19c82c-dcec-4429-b8b4-00aea0d7c941']]]")
+
+
+  useEffect(() => {
+    get(child(dbRef, `/`)).then((snapshot) => {
+      const x = snapshot.val()
+      setValue(Array(x[level]))
+
+  })
+  }, [])
+
+  console.log(value)
+
+ 
+console.log(value[0][0])
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    
+
+    <>
+
+      <div className="grid grid-cols-7 grid-rows-6 gap-6 h-screen rounded-lg p-5 bg-[#2D2D2D]">
+        <div className="col-span-7 rounded-lg">
+          <Image src={logo2} />
+          <select onChange={(e)=>{setLevel(e.target.value)}}>
+            <option value={101}>User 1</option>
+            <option value={102}>User 2</option>
+            <option value={103}>User 3</option>
+          </select>
+        </div>
+        <div className="col-span-5 row-span-2 row-start-2 bg-[#8A8A8A50] rounded-xl border-8 border-indigo-500">
+            <Image src={logo} className="flex m-5"/>
+            <h1 className="flex p-5">Loading</h1>
+          </div>
+        <div className="col-span-2 row-span-5 col-start-6 row-start-2 justify-center items-center bg-blue-600 p-20 bg-[#8A8A8A50] rounded-xl border-8 border-indigo-500">
+          <Image src={pfp} className="w-40 h-40 p-50 m-50 rounded-full"/>
+          <h1 className=" mt-10">Name : {value[0][0]}</h1>
+          <h1 className=" mt-10">Age : {value[0][1]}</h1>
+          <h1 className=" mt-10">Gender :{value[0][2]} </h1>
+          <h1 className=" mt-10">Address : {value[0][3]}</h1>
+
+        </div>
+        <div className="col-span-2 row-span-3 row-start-4 bg-blue-400 bg-[#8A8A8A50] rounded-xl border-8 border-indigo-500">
+          <h1 className="m-5 p-15">Patient's Current Status</h1>
+          <h2 className="p-50">Weight : </h2>
+          <h2 className="p-50">Temperature : </h2>
+          <h2 className="p-50">Blood Pressure : </h2>
+        </div>
+        <div className="col-span-3 row-span-3 col-start-3 row-start-4 bg-blue-500 bg-[#8A8A8A50] rounded-xl border-8 border-indigo-500">
+          <h1 className="m-2 p-5">Files</h1>
+          <div className="bg-blue-400 w-1/2 h-12 m-6 rounded-xl"></div>
+
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+    </>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
   );
 }
